@@ -1,57 +1,52 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+<!DOCTYPE html><html lang="en"><head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aviator</title>
     <link rel="stylesheet" href="../../css/styles-aviator.css">
-</head>
-<body class="page">
-
-    <div class="loader">
-        <div class="bar"></div>
-    </div>
-
-    
-    
-   
-    <div class="cv">
-        <img class="obloko" src="../../img/aviator-img/obl.svg">
-    </div>
-
-    
+    <style>
   
-   
-    <div class="winner">
-        <img  class="luck" src="../../img/aviator-img/avia_logo.svg">
-        <img class="win" src="../../img/aviator-img/1win_logo.png">
+      .game-here {
+        margin: 500px;
+      }
+    </style>
+    <title>Aviator</title>
+  </head>
+  
+  <body>
+    <div class="background">
+      <div class="container">
+        <img class="pers-animate" src="../../img/aviator-img/plane.svg" alt="plane">
+  
+        <div id="error-notification" class="error-notification deactivate">
+          <div class="error-background"></div>
+          <img class="icon-error" src="../../img/aviator-img/error.svg" alt="error">
+          <p id="text-error" class="text-error"></p>
+          <div id="error-exit" class="error-exit">
+            <img src="../../img/aviator-img/error-exit.svg" alt="exit">
+          </div>
+          <div id="error-progress" class="error-progress"></div>
+        </div>
+  
+        <div class="top-content">
+          <img draggable="false" src="../../img/aviator-img/logo.svg" alt="logo" class="logo-game">
+        </div>
+  
+  
+        <div class="print-signal" id="print-signal"><span>Click on<br>"GET SIGNAL"</span></div>
+        <div class="stop-signal-time deactivate" id="stop-signal-time-block">
+          <p class="stop-timer" id="stop-timer"></p>
+          <div class="stop-progress" id="stop-progress"></div>
+        </div>
+  
+  
+        <div class="button-game">
+          <button class="get-signal" id="get-signal">GET SIGNAL</button>
+          <button class="get-signal-two deactivate" id="get-signal-two">GET SIGNAL</button>
+          <a href="../../index.html"><button class="get-signal">Back to menu</button></a>
+        </div>
+      </div>
     </div>
-
-
-    <div class="rocket">
-        <button id="startButton" class="button" onclick="generateRandomNumber()">GET SIGNAL</button>
-        <button id="startButton" class="button2" ><a href="../../index.html" style="text-decoration: none; color: white;">BACK</a></button>
-        <p id="time" class="timer"></p>
-        <p id="chance" class="ch"></p>
-        <p id="timers" class="timerss"></p>
-        <p class="ti">Time:</p>
-        <p class="sh">Chance:</p>
-        <p class="tg">Before the signal:</p>
-        <img class="rocket__boy" src="../../img/aviator-img/avia3.svg"/>
-
-       
-        <div class="section"></div>
-        <div class="section2"></div>
-        <div class="section3"></div>
-        
-
-
-        
+  
     <script src="../../scripts/script-aviator.js"></script>
-   
-    <div id="result" class="rand"></div>
-    
-
-</body>
-</html>
+  
+  
+  </body></html>
