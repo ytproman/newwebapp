@@ -1,271 +1,465 @@
+/* ========== Base ========== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #fff;
+  background: radial-gradient(circle at 50% 50%, #090909 0%, #000000 100%);
+  overflow: hidden;
+}
+
+/* ========== Красивый анимированный фон (основная секция) ========== */
+.background {
+  position: relative;
+  width: 420px;
+  height: 100vh;
+  border-radius: 20px;
+  overflow: hidden;
+  background: radial-gradient(circle at top left, rgba(255, 0, 80, 0.25) 0%, transparent 70%),
+              radial-gradient(circle at bottom right, rgba(0, 180, 255, 0.20) 0%, transparent 70%),
+              linear-gradient(180deg, #0f0f11 0%, #060607 100%);
+  box-shadow: 0 12px 60px rgba(0,0,0,0.6), 0 0 100px rgba(255, 0, 80, 0.10) inset;
+  animation: backgroundShift 20s ease-in-out infinite alternate;
+}
+
+/* плавное смещение бликов */
+@keyframes backgroundShift {
+  0% {
+    background-position: 0% 50%, 100% 50%, center;
   }
-  
-  body {
-    font-family: "Inter", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(180deg, #521515 0%, #100F0F 50%);
-    color: #ffffff;
+  50% {
+    background-position: 40% 10%, 60% 90%, center;
   }
-  
-  .background {
-    width: 398px;
-    height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background: linear-gradient(180deg, #521515 0%, #100F0F 100%);
+  100% {
+    background-position: 100% 50%, 0% 50%, center;
   }
-  
-  .pers-animate {
-    position: absolute;
-    left: -205px;
-    top: 138px;
-    z-index: 0;
-    width: 319px;
-    height: 300px;
-    animation: cowmove 15s infinite;    
+}
+
+/* дополнительный большой размытой неоновый слой */
+.background::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(circle, rgba(255, 0, 120, 0.12) 0%, transparent 65%);
+  filter: blur(60px);
+  animation: lightPulse 12s infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes lightPulse {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+  50% { transform: scale(1.18) rotate(12deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+}
+
+/* подсветка внизу */
+.background::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 30%;
+  background: linear-gradient(to top, rgba(255, 0, 80, 0.20), transparent 70%);
+  filter: blur(18px);
+  z-index: 1;
+}
+
+/* ========== Контейнер интерфейса поверх фона ========== */
+.container {
+  position: relative;
+  z-index: 2; /* выше фоновых бликов, ниже модального окна формы (coef-form-wrapper) */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px 0;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* ========== Самолёт (анимация) ========== */
+.pers-animate {
+  position: absolute;
+  left: -150px;
+  top: 20px;
+  z-index: 1;
+  width: 300px;
+  height: auto;
+  opacity: 0.75;
+  animation: fly 12s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes fly {
+  0% { transform: translateX(0) translateY(0) rotate(0deg); }
+  45% { transform: translateX(260px) translateY(-28px) rotate(6deg); }
+  55% { transform: translateX(260px) translateY(-28px) rotate(6deg); }
+  100% { transform: translateX(0) translateY(0) rotate(0deg); }
+}
+
+/* ========== Логотип сверху ========== */
+.top-content {
+  margin-top: 18px;
+  z-index: 3;
+}
+.logo-game {
+  width: 150px;
+  user-select: none;
+  filter: drop-shadow(0 0 12px rgba(255, 0, 90, 0.18));
+}
+
+/* ========== Центральный круг / индикатор ========== */
+.print-signal {
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(circle at 40% 30%, rgba(255, 0, 90, 0.06), rgba(0,0,0,0.65));
+  border: 3px solid rgba(255, 0, 80, 0.24);
+  border-radius: 50%;
+  font-size: 60px;
+  font-weight: 800;
+  color: #ff6b8a;
+  text-align: center;
+  transition: transform .28s ease, box-shadow .28s ease;
+  z-index: 3;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+
+.print-signal:hover {
+  transform: scale(1.03);
+  box-shadow: 0 18px 60px rgba(255, 0, 120, 0.12), 0 6px 20px rgba(0,0,0,0.5);
+}
+
+.print-signal span {
+  text-transform: uppercase;
+  font-size: 18px;
+  line-height: 1.05;
+  color: #ffd7e1;
+}
+
+/* ========== Таймер / прогресс ========== */
+.stop-signal-time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  width: 250px;
+  z-index: 3;
+}
+
+.stop-timer {
+  font-size: 20px;
+  font-weight: 900;
+  color: #ff7a9a;
+  height: 28px;
+}
+
+.stop-progress {
+  width: 220px;
+  height: 12px;
+  background: linear-gradient(90deg, #ff4b79 0%, #b4b4b4 100%) left / 0% 100% no-repeat #2a2a2a;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+}
+
+/* ========== Кнопки игрового блока ========== */
+.button-game {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  z-index: 3;
+}
+
+.get-signal,
+.get-signal-two {
+  position: relative;
+  width: 280px;
+  height: 56px;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+  background: linear-gradient(90deg, #ff416c 0%, #ff6b6b 100%);
+  box-shadow: 0 8px 30px rgba(255, 60, 110, 0.12), 0 2px 6px rgba(0,0,0,0.4);
+  z-index: 3;
+}
+
+.get-signal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(255, 60, 110, 0.18);
+}
+
+.get-signal:active,
+.get-signal-two:active {
+  transform: scale(0.97);
+}
+
+/* стилизованный фон свечения под кнопками */
+.get-signal::before,
+.get-signal-two::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 50% 10%, rgba(255, 80, 140, 0.12), transparent 40%);
+  border-radius: 30px;
+  filter: blur(14px);
+}
+
+/* кнопка "Back to menu" может выглядеть одинаково, т.к. в html это тоже get-signal */
+.button-game a { text-decoration: none; }
+
+/* ========== Ошибка / уведомление ========== */
+.error-notification {
+  width: 320px;
+  height: 56px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: -25px;
+  clip-path: inset(0 round 10px);
+  transition: all .2s;
+  transform: translateY(-120px);
+  z-index: 4;
+  pointer-events: auto;
+  background: rgba(255, 20, 20, 0.06);
+  border: 1px solid rgba(255, 10, 10, 0.14);
+  backdrop-filter: blur(4px);
+}
+
+.error-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,80,80,0.12), rgba(255,40,40,0.08));
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.icon-error {
+  z-index: 3;
+  width: 28px;
+  height: 28px;
+  margin-right: 8px;
+}
+
+.text-error {
+  color: #ffd6d6;
+  font-size: 13px;
+  font-weight: 800;
+  z-index: 3;
+  padding-left: 6px;
+  padding-right: 46px;
+  text-align: center;
+}
+
+.error-exit {
+  position: absolute;
+  right: 6px;
+  width: 40px;
+  height: 40px;
+  z-index: 3;
+  cursor: pointer;
+  background: rgba(255, 0, 0, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  margin-right: 4px;
+}
+
+.error-progress {
+  width: 287px;
+  height: 3px;
+  background: linear-gradient(90deg, #e00000 0%, #e00000 100%) left / 0% 100% no-repeat #d9d9d9;
+  z-index: 4;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 5px;
+}
+
+/* ========== Форма коэффициентов (модалка) ========== */
+#coef-form-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(6, 6, 6, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+}
+
+#coef-form {
+  background: linear-gradient(180deg, #0f0f10, #131214);
+  color: #fff;
+  padding: 26px;
+  border-radius: 14px;
+  max-width: 420px;
+  width: 92%;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 24px rgba(255, 0, 110, 0.06);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 10000;
+}
+
+#coef-form h3 {
+  margin-bottom: 14px;
+  font-size: 18px;
+  color: #ff6b8a;
+  text-align: center;
+}
+
+#coef-form input[type="number"],
+#coef-form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #131314;
+  color: #fff;
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+#coef-form input:focus {
+  box-shadow: 0 0 18px rgba(255, 0, 110, 0.12);
+  background: #1a1a1b;
+}
+
+#coef-form button {
+  padding: 10px 18px;
+  border: none;
+  background: linear-gradient(90deg, #ff416c, #ff6b6b);
+  color: white;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+#coef-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(255, 60, 120, 0.12);
+}
+
+/* ========== Мелкие вспомогательные классы ========== */
+.deactivate {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+/* если нужно быстро показать — устанавливай стиль inline или снимай класс deactivate в js */
+.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Адаптив (на мобильных немного уменьшаем размеры) */
+@media (max-width: 480px) {
+  .background { width: 100vw; border-radius: 0; }
+  .print-signal { width: 200px; height: 200px; }
+  .get-signal { width: 86vw; }
+  .pers-animate { width: 220px; left: -120px; top: 80px; }
+  #coef-form { width: 94%; padding: 18px; }
+}
+
+/* ========== Лого — эффект сияния и мягкого свечения ========== */
+.top-content {
+  margin-top: 22px;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.logo-game {
+  width: 160px;
+  user-select: none;
+  filter: drop-shadow(0 0 22px rgba(255, 0, 120, 0.22))
+          drop-shadow(0 0 42px rgba(255, 0, 120, 0.10));
+  animation: logoPulse 4s ease-in-out infinite;
+  transition: transform .3s ease, filter .3s ease;
+}
+
+.logo-game:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 30px rgba(255, 70, 140, 0.45))
+          drop-shadow(0 0 70px rgba(255, 0, 120, 0.25));
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 16px rgba(255, 0, 120, 0.15))
+            drop-shadow(0 0 36px rgba(255, 0, 120, 0.08));
   }
-  
-  @keyframes cowmove{
-      0% {
-        transform: translateX(0px) rotateY(0deg);
-      }
-      49% {
-        transform: translateX(300px) translateY(-25px) rotateY(0deg);
-      }
-      50% {
-        transform: translateX(300px) translateY(-25px) rotateY(0deg);
-      }
-      100% {
-        transform: translateX(0px) rotateY(0deg);
-      }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 26px rgba(255, 0, 140, 0.25))
+            drop-shadow(0 0 50px rgba(255, 0, 140, 0.14));
   }
-  
-  
-  .container {
-    position: relative;
-    width: 398px;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .error-notification {
-    width: 300px;
-    height: 50px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: -25px;
-    clip-path: inset(0px round 10px 10px);
-    transition: all .2s;
-    transform: translateY(-99px);
-  }
-  
-  .error-background {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 300px;
-    height: 50px;
-    background: #FFEBEB;
-    opacity: .5;
-    border-radius: 10px;
-    margin-bottom: -52px;
-  }
-  
-  .icon-error {
-    z-index: 2;
-  }
-  
-  .error-exit {
-    position: absolute;
-    right: 0;
-    width: 50px;
-    height: 50px;
-    z-index: 2;
-    cursor: pointer;
-    background: #FFC2C2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-  }
-  
-  .text-error {
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 900;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    padding-left: 10px;
-    padding-right: 45px;
-  }
-  
-  .error-progress {
-    width: 287px;
-    height: 3px;
-    background: linear-gradient(90deg, #E00000 0%, #E00000 100%) left /0% 100% no-repeat #D9D9D9;
-    z-index: 4;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-radius: 5px;
-  }
-  
-  @keyframes animateErrorProgress {
-    100% {
-      background-size: 100% 100%;
-    }
-  }
-  
-  .top-content {
-    margin-bottom: 60px;  
-  }
-  
-  .name-bot {
-    display: flex;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: 900;
-  }
-  
-  .print-signal {
-    margin-bottom: 34px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 217px;
-    height: 217px;
-    background-color: #151027;
-    border: 5px solid #B41313;
-    border-radius: 50%;
-    font-size: 40px;
-    font-weight: 900;
-    transition: all .5s;
-    z-index: 10;
-  }
-  
-  .print-signal span {
-    text-transform: uppercase;
-    font-size: 20px;
-    text-align: center;
-  }
-  
-  
-  .stop-signal-time {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 26px;
-    width: 230px;
-    transition: all .5s;
-  }
-  
-  .stop-timer {
-    font-size: 20px;
-    font-weight: 900;
-    height: 35px;
-  }
-  
-  .stop-progress {
-    width: 221px;
-    height: 18px;
-    background: linear-gradient(90deg, #FF0303 0%, #B4B4B4 100%) left /0% 100% no-repeat #D9D9D9;
-    border-radius: 15px;
-  }
-  
-  @keyframes animateProgress {
-    100% {
-      background-size: 100% 100%;
-    }
-  }
-  
-  .button-game {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  .get-signal {
-    position: relative;
-    width: 278px;
-    height: 56px;
-    border: none;
-    background: linear-gradient(90deg, #FF0303 0%, #B4B4B4 100%); box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    border-radius: 30px;
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: 900;
-    cursor: pointer;
-    transition: all .2s;
-    z-index: 0;
-  }
-  
-  .get-signal-two {
-    position: absolute;
-    width: 278px;
-    height: 56px;
-    border: none;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    border-radius: 30px;
-    background: linear-gradient(90deg, #FF0303 0%, #B4B4B4 100%); box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: 900;
-    cursor: pointer;
-    z-index: -1;
-    transition: all .2s;
-  }
-  
-  .game-here {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    width: 130px;
-    height: 35px;
-    background: linear-gradient(90deg, #FE6060 0%, #828885 100%);
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    border-radius: 30px;
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 900;
-    text-decoration: none;
-    transition: all .2s;
-    z-index: 4;
-  }
-  
-  .get-signal::before, .game-here::before, .get-signal-two::before{
-    content: "";
-    position: absolute;
-    inset: 0px;
-    z-index: -1;
-    background: linear-gradient(90deg, #FF0303 0%, #B4B4B4 100%); box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    filter: blur(10px);
-    border-radius: 30px;
-  }
-  
-  .get-signal:active, .game-here:active, .get-signal-two:active{
-    transform: scale(95%);
-  }
-  
-  .deactivate {
-    opacity: 0;
-  }
-  
+}
+
+/* Мягкое сияние за логотипом */
+.top-content::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 100px;
+  border-radius: 50%;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255, 0, 90, 0.18) 0%, transparent 70%);
+  filter: blur(36px);
+  z-index: 1;
+  animation: logoGlowMove 6s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlowMove {
+  0% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+  50% { transform: translateX(-48%) scale(1.1); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+}
