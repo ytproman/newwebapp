@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0f05;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.background {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #305512 0%, #325114 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* Распределяет лого, яйцо и кнопки */
+  padding: 40px 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  z-index: 5;
+}
+
+/* Яйцо */
+.egg-wrapper {
+  flex-grow: 1; /* Занимает всё свободное место в центре */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.print-signal {
+  width: 220px;
+  height: 260px;
+  background: radial-gradient(circle at 30% 30%, #fff6d5, #ffcc00);
+  border: 8px solid #331a00;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  font-weight: 900;
+  color: #331a00;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* Кнопки */
+.button-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.btn-main {
+  width: 100%;
+  max-width: 300px;
+  height: 60px;
+  background: linear-gradient(180deg, #ffeb3b, #f57f17);
+  border: none;
+  border-bottom: 5px solid #a56d00;
+  border-radius: 15px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #331a00;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.btn-main:active {
+  transform: translateY(3px);
+  border-bottom: 2px solid #a56d00;
+}
+
+.btn-back {
+  background: transparent;
+  border: 2px solid #558b2f;
+  color: #81c784;
+  padding: 8px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Персонаж */
+.pers-animate {
+  position: absolute;
+  bottom: 75%;
+  left: -100px;
+  width: 80px;
+  animation: walk 12s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes walk {
+  0% { left: -100px; transform: scaleX(1); }
+  45% { left: 110%; transform: scaleX(1); }
+  50% { left: 110%; transform: scaleX(-1); }
+  95% { left: -100px; transform: scaleX(-1); }
+  100% { left: -100px; transform: scaleX(1); }
+}
+
+.deactivate { display: none; }
