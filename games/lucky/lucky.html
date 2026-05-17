@@ -1,50 +1,47 @@
-<!DOCTYPE html><html lang="ru"><head>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lucky Jet Predictor</title>
     <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Prosto+One&amp;display=swap" rel="stylesheet">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucky jet</title>
     <link rel="stylesheet" href="../../css/lucky-jet.css">
 </head>
-<body class="page">
-   
-    <div class="cv">
-        <img id="ob1" class="obloko" src="images/obl.svg">
-        <img id="ob2" class="obloko2" src="images/obl.svg">
-    </div>
+<body>
 
-
-   
-    <div class="winner">
-        <img class="luck" src="../../img/lucky/Lucky.svg">
-        <img class="win" src="../../img/lucky/1win_logo.png">
-    </div>
-
-    
-
-    <div class="rocket">
-        
-        <a href="https://1wxxlb.com/casino/list?open=register&p=2wx3">
-            <button class="button2">GO TO GAME</button>
+    <div class="app-container">
+        <!-- Кнопка Назад -->
+        <a href="../../index.html" class="btn-back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Назад
         </a>
 
-        <a href="../../index.html">
-            <button class="button3">BACK TO MENU</button>
-        </a>
-
-        <div id="responseText" class="text"></div>
-        <div class="loader2"></div>
-        <div class="visible">
-            <iframe id="myIframe" src="https://100hp.app/lucky/onewin/?exitUrl=https%253A%252F%252F1wdqjx.top%252Fcasino&amp;language=ru&amp;b=demo" onload="hideElements()" scrolling="no"></iframe>
+        <!-- Шапка -->
+        <div class="header">
+            <h1>LUCKY JET</h1>
+            <p>AI SIGNAL PREDICTOR</p>
         </div>
-   
 
-        
+        <!-- Радар с коэффициентом -->
+        <div class="radar-container">
+            <div class="circle-glow"></div>
+            <div class="circle-inner">
+                <div class="scanner" id="scanner"></div>
+                <div class="multiplier" id="multiplier">WAIT</div>
+            </div>
+        </div>
+
+        <!-- Управление и Соцсети -->
+        <div class="btn-group">
+            <!-- Ссылка на Telegram -->
+            <a href="https://t.me/JugoKazik_bot" target="_blank" class="tg-badge">
+                <span>TELEGRAM: @JugoKazik_bot</span>
+            </a>
+            
+            <button class="btn btn-predict" id="predictBtn">ПОЛУЧИТЬ СИГНАЛ</button>
+        </div>
+    </div>
+
     <script src="../../scripts/lucky-jet.js"></script>
-   
-    <div id="result" class="rand"></div>
-    
-
-
-</div></body></html>
+</body>
+</html>

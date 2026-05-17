@@ -1,82 +1,77 @@
-let lastBettingTime = 0; 
-let tokenIndex = 0;
+        const predictBtn = document.getElementById('predictBtn');
+        const multiplierDisplay = document.getElementById('multiplier');
+        const scanner = document.getElementById('scanner');
 
-const tokens = [
-    "demo",
-    "demo",
-    "demo" 
-];
+        // Переменная для отслеживания состояния кулдауна
+        let isCooldown = false;
 
-function getAuthorizationToken() {
-    const token = tokens[tokenIndex];
-    tokenIndex = (tokenIndex + 1) % tokens.length;
-    return `Bearer ${token}`;
-}
+        function generateSignal() {
+            // Если сейчас активна блокировка, прерываем функцию
+            if (isCooldown) return;
 
-function getRan(min, max) {
-    return Math.random() * (max - min) + min;
-}
+            // Блокируем кнопку на время анализа
+            isCooldown = true;
+            predictBtn.disabled = true;
+            predictBtn.innerText = "АНАЛИЗ АЛГОРИТМА...";
+            
+            // Запускаем визуальную анимацию сканера
+            multiplierDisplay.style.opacity = '0.3';
+            scanner.style.display = 'block';
+            multiplierDisplay.innerText = "---";
 
-async function checkSignal() {
-    let randomNumber1 = getRan(1.1, 5.0).toFixed(2);
-    const url = 'https://crash-gateway-cr.100hp.app/state?id_n=1play_luckyjet';
-    const response = await fetch(url, {
-        headers: {
-            'Authorization': getAuthorizationToken()
+            setTimeout(() => {
+                let rand = Math.random();
+                let result;
+                
+                if (rand < 0.25) { 
+                    result = (Math.random() * (1.99 - 1.00) + 1.00).toFixed(2);
+                } else if (rand < 0.75) { 
+                    result = (Math.random() * (4.00 - 2.00) + 2.00).toFixed(2);
+                } else if (rand < 0.90) { 
+                    result = (Math.random() * (10.00 - 4.01) + 4.01).toFixed(2);
+                } else { 
+                    result = (Math.random() * (20.00 - 10.01) + 10.01).toFixed(2);
+                }
+
+                // Показываем результат
+                scanner.style.display = 'none';
+                multiplierDisplay.style.opacity = '1';
+                
+                // Меняем цвета в зависимости от размера коэффициента
+                if (result >= 10.00) {
+                    multiplierDisplay.style.color = "#ff0055"; // Розово-красный для огромных иксов
+                    multiplierDisplay.style.textShadow = "0 0 20px #ff0055";
+                } else if (result >= 4.00) {
+                    multiplierDisplay.style.color = "#ffc300"; // Золотой для высоких
+                    multiplierDisplay.style.textShadow = "0 0 20px #ffc300";
+                } else if (result >= 2.00) {
+                    multiplierDisplay.style.color = "#a67cff"; // Фиолетовый для частых (2-4)
+                    multiplierDisplay.style.textShadow = "0 0 20px #a67cff";
+                } else {
+                    multiplierDisplay.style.color = "#ffffff"; // Белый для мелких (до 2)
+                    multiplierDisplay.style.textShadow = "0 0 20px #944ef5";
+                }
+
+                multiplierDisplay.innerText = `x${result}`;
+                
+                // Запускаем таймер кулдауна на 30 секунд
+                let secondsLeft = 30;
+                predictBtn.innerText = `ОЖИДАЙТЕ ${secondsLeft} СЕК...`;
+                
+                const countdown = setInterval(() => {
+                    secondsLeft--;
+                    predictBtn.innerText = `ОЖИДАЙТЕ ${secondsLeft} СЕК...`;
+                    
+                    if (secondsLeft <= 0) {
+                        clearInterval(countdown);
+                        isCooldown = false;
+                        predictBtn.disabled = false;
+                        predictBtn.innerText = "ПОЛУЧИТЬ СИГНАЛ";
+                    }
+                }, 1000);
+
+            }, 1500); // Окончание искусственной паузы "анализа"
         }
-    });
-    const data = await response.json();
-    const state = data.current_state;
 
-
-    let responseText = document.getElementById('responseText');
-    if (!responseText) {
-        console.error('Element with ID responseText not found.');
-        return;
-    }
-
-    if (state === "betting" && Date.now() - lastBettingTime > 5000) {
-        let resultText = `${randomNumber1}x`;
-        document.getElementById("responseText").textContent = resultText;
-        localStorage.setItem('resultText', resultText);
-        responseText.className = 'text betting';        
-        lastBettingTime = Date.now();
-    } else if (state === "ending") {
-        responseText.textContent = "Waiting..";
-        responseText.className = 'text fly';
-    } 
-}
-
-function fetchDataAndUpdate() {
-    const url = 'https://crash-gateway-cr.100hp.app/state?id_n=1play_luckyjet';
-    fetch(url, {
-        headers: {
-            'Authorization': getAuthorizationToken()
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            const kef = parseFloat(data.current_coefficients);
-            updateCoefficients(kef);
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
-
-function updateCoefficients(coefficients) {
-    const coefficientsDiv = document.getElementById('coefficients');
-    if (!coefficientsDiv) {
-        console.error('Element with ID coefficients not found.');
-        return;
-    }
-
-    if (coefficients !== 1) {
-        coefficientsDiv.innerText = `x${coefficients}`; 
-        coefficientsDiv.classList.remove('smallt');
-        coefficientsDiv.classList.add('kif');
-    } 
-}
-
-fetchDataAndUpdate();
-setInterval(fetchDataAndUpdate, 100);
-let intervalId = setInterval(checkSignal, 100);
-checkSignal();
+        // Привязываем функцию к кнопке
+        predictBtn.addEventListener('click', generateSignal);

@@ -1,53 +1,130 @@
+/* Базовые сбросы */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
+/* Кастомный хакерский шрифт */
 @font-face {
     font-family: secretfont;
     src: url("../fonts/Hacked.ttf");
 }
 
-body{
+/* Космический анимированный фон (совпадает по стилю с Lucky Jet) */
+body {
     overflow-x: hidden;
     font-family: "Inter", sans-serif;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
-    min-height: 80vh;
-    background: #222121;
-    color: #000000;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 40px 16px;
+    background-color: #0d081b;
+    background-image: 
+        radial-gradient(circle at 50% 0%, rgba(148, 78, 245, 0.25) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(255, 0, 85, 0.08) 0%, transparent 40%);
 }
 
-img {
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
+/* Заголовок с неоновым свечением */
+.lng-choose {
+    color: #ffffff;
+    font-family: secretfont, sans-serif;
+    font-size: 42px;
+    letter-spacing: 3px;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #ffffff 0%, #a66dfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 12px rgba(148, 78, 245, 0.4));
 }
 
-.choose-button {
-    border: none;
-    background: none;
-    cursor: pointer;
-    margin-bottom: 4px;
-}
-
+/* Главный контейнер для карточек (Эффект матового стекла) */
 .choose-card {
-    display: flex;
-    flex-direction: column;
-    padding: 15px 15px;
-    background: #444748;
-    border-radius: 25px;
+    width: 100%;
+    max-width: 360px;
+    max-height: 75vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Две колонки кнопок */
+    gap: 14px;
+    padding: 20px;
+    background: rgba(21, 16, 40, 0.6);
+    border: 1px solid rgba(148, 78, 245, 0.25);
+    border-radius: 24px;
     overflow-y: auto;
-    box-shadow: 0px 0px 15px red;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(92, 36, 252, 0.15);
 }
 
-.lng-choose{
-    color:rgb(242, 248, 252);
-    font-family: secretfont;
-    font-size: 50px;
+/* Настройки скроллбара внутри контейнера */
+.choose-card::-webkit-scrollbar {
+    width: 4px;
+}
+.choose-card::-webkit-scrollbar-track {
+    background: transparent;
+}
+.choose-card::-webkit-scrollbar-thumb {
+    background: rgba(148, 78, 245, 0.4);
+    border-radius: 10px;
+}
+
+/* Обёртка ссылок */
+.choose-link {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+
+/* Сами кнопки-карточки игр */
+.choose-button {
+    width: 100%;
+    aspect-ratio: 2.2 / 1; /* Поддерживает пропорции плашек */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Картинки внутри кнопок автоматически адаптируются */
+.choose-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Заполняет кнопку без растягивания картинки */
+    pointer-events: none;
+    -webkit-user-drag: none;
+    transition: transform 0.25s ease;
+}
+
+/* Красивые эффекты при наведении и клике */
+.choose-button:hover {
+    border-color: rgba(148, 78, 245, 0.6);
+    background: rgba(148, 78, 245, 0.1);
+    box-shadow: 
+        0 8px 20px rgba(92, 36, 252, 0.25),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.choose-button:hover img {
+    transform: scale(1.04); /* Легкое приближение логотипа игры */
+}
+
+.choose-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(92, 36, 252, 0.2);
 }
